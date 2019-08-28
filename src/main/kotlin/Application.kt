@@ -3,6 +3,8 @@ package at.rainerkern.ktor
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.html.respondHtml
+import io.ktor.http.ContentType
+import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
@@ -19,6 +21,12 @@ fun main() {
             get("/") {
                 mainPage(call)
             }
+            get("/api") {
+                call.respondText(
+                    contentType = ContentType.Application.Json,
+                    text = apiCall()
+                )
+            }
         }
     }.start(wait = true)
 }
@@ -33,3 +41,5 @@ suspend fun mainPage(call: ApplicationCall) = call.respondHtml {
         }
     }
 }
+
+fun apiCall() = """{"id":1,"name":"test entity"}"""
