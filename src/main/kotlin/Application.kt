@@ -13,6 +13,9 @@ import kotlinx.html.ATarget
 import kotlinx.html.a
 import kotlinx.html.body
 import kotlinx.html.div
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
 
 
 fun main() {
@@ -42,4 +45,16 @@ suspend fun mainPage(call: ApplicationCall) = call.respondHtml {
     }
 }
 
-fun apiCall() = """{"id":1,"name":"test entity"}"""
+@UnstableDefault
+fun apiCall() = Json.stringify(ApiEntity.serializer(), entity)
+
+val entity = ApiEntity(
+    id = 1,
+    name = "test entity"
+)
+
+@Serializable
+data class ApiEntity(
+    val id: Long,
+    val name: String
+)
